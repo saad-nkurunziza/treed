@@ -13,7 +13,7 @@ const RightBar = async () => {
           {users.map((user) => (
             <UserCard
               key={user.id}
-              image={user.image as url}
+              image={user.image as string}
               username={user.username as string}
               email={user.email as string}
               id={user.id}

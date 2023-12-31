@@ -3,7 +3,7 @@ import Image from "next/image";
 import PageLayout from "@/components/PageLayout";
 import Link from "next/link";
 import prisma from "@/lib/prisma";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { formatDate } from "@/lib/utils";
 const fetchActivities = async () => {
   const activities = await prisma.activity.findMany({
@@ -38,18 +38,19 @@ const Page = async () => {
           <div className="flex flex-col gap-5">
             {activities.map((activity) => {
               const formattedDate = formatDate(activity.createdAt);
-              const firstLetter = activity.user?.name.charAt(0).toUpperCase();
+              const firstLetter = (activity.user?.name as string)
+                .charAt(0)
+                .toUpperCase();
               return (
                 <article
                   className="w-full flex items-center justify-between gap-2 rounded-md bg-dark-2 px-7 py-4"
                   key={activity.id}
                 >
-
                   <div className="flex items-center gap-2 ">
                     <Avatar className="relative h-8 w-8">
-  <AvatarImage src={activity.user?.image} />
-  <AvatarFallback>{firstLetter}</AvatarFallback>
-</Avatar>
+                      <AvatarImage src={activity.user?.image as string} />
+                      <AvatarFallback>{firstLetter}</AvatarFallback>
+                    </Avatar>
                     <p className="!text-small-regular text-light-1">
                       <span className="mr-1 text-primary-500">
                         {activity.user?.username}

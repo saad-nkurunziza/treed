@@ -73,7 +73,9 @@ const TreedCard: FC<Props> = async ({
                   {name}
                 </h4>
               </Link>
-              <p className="text-tiny-medium text-light-2">{formattedDate}</p>
+              <p className="text-tiny-medium text-muted-foreground">
+                {formattedDate}
+              </p>
             </div>
             <p className="mt-2 text-small-regular text-light-2">{content}</p>
 
