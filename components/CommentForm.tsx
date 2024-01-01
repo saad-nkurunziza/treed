@@ -14,7 +14,7 @@ const CommentForm = ({
   const addComment = async (formData: FormData) => {
     "use server";
     const session = await getLoggedInUser();
-    const user = await session?.user;
+    const user = session?.user;
     const comment = formData.get("comment") as string;
     const treedId = formData.get("treedId") as string;
     const userId = user?.email;
@@ -42,7 +42,7 @@ const CommentForm = ({
       <div className="flex w-full items-center gap-3">
         <label>
           <Image
-            src={`/images/${currentUserImg}`}
+            src={currentUserImg}
             alt="current_user"
             width={48}
             height={48}
@@ -61,7 +61,7 @@ const CommentForm = ({
 
       <Button
         type="submit"
-        className="rounded-3xl bg-primary-500 px-8 py-2 !text-small-regular text-light-1 max-xs:w-full"
+        className="rounded-3xl bg-primary-500 px-6 py-2 !text-small-regular text-light-1 max-xs:w-full"
       >
         Reply
       </Button>

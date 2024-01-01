@@ -18,7 +18,11 @@ const page = async () => {
       treeds: {
         include: {
           user: true,
-          comments: true,
+          comments: {
+            include: {
+              user: true,
+            },
+          },
           _count: true,
         },
       },
@@ -29,7 +33,7 @@ const page = async () => {
       {currentUser && (
         <div className="flex flex-col">
           <ProfileHeader
-            image={currentUser.image!}
+            image={currentUser.image as string}
             name={currentUser.name as string}
             username={currentUser.username as string}
             bio={currentUser.bio as string}

@@ -99,16 +99,19 @@ const TreedCard: FC<Props> = async ({
 
       {comments.length > 0 ? (
         <div className="ml-1 mt-3 flex items-center gap-2">
-          {comments.slice(0, 3).map((comment: any, index: number) => (
-            <Image
-              key={index}
-              src={`/images/${comment.User.image}`}
-              alt={`user_${index}`}
-              width={24}
-              height={24}
-              className={`${index !== 0 && "-ml-5"} rounded-full object-cover`}
-            />
-          ))}
+          {comments.slice(0, 3).map((comment: any, index: number) => {
+            return(
+            <Avatar
+              className={`${index !== 0 && "-ml-5"} relative h-6 w-6`}
+              key={comment.id}
+            >
+              <AvatarImage src={comment.user?.image} />
+              <AvatarFallback>
+                {comment.user?.name.charAt(0).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+          )
+          })}
 
           <Link href={`/treed/${id}`}>
             <p className="mt-1 text-subtle-medium text-gray-1">
