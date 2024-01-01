@@ -1,1 +1,1 @@
-## Simple Twitter-like app
+## Simple Thread-like app
