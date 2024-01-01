@@ -1,9 +1,9 @@
 "use client";
 import { sidebarLinks } from "@/lib/constants";
-import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import LogoutButton from "@/components/LogoutButton";
 
 const LeftBar = () => {
   const currentPath = usePathname();
@@ -38,18 +38,7 @@ const LeftBar = () => {
       </div>
 
       <div className="mt-8 px-6">
-        <div
-          className="flex cursor-pointer gap-4 p-4"
-          onClick={() =>
-            signOut({
-              callbackUrl: `${window.location.origin}/auth`,
-            })
-          }
-        >
-          <Image src="/assets/logout.svg" alt="logout" width={24} height={24} />
-
-          <p className="text-light-2 max-lg:hidden">Logout</p>
-        </div>
+        <LogoutButton />
       </div>
     </section>
   );
