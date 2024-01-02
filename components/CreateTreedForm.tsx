@@ -1,19 +1,27 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { createTreed } from "@/lib/actions";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import { Label } from "./ui/label";
+import { useFormState, useFormStatus } from "react-dom";
 
 const CreateTreedForm = () => {
   const [content, setContent] = useState("");
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
   };
+  const [state, formAction] = useFormState(createTreed, null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const { pending } = useFormStatus();
   return (
     <form
       className="flex flex-col justify-start gap-10 mt-10"
-      action={createTreed}
+      action={async (formData) => {
+        formAction(formData);
+        formRef.current?.reset();
+      }}
+      autoComplete="off"
     >
       <div className="flex flex-col w-full gap-3">
         <Label className="text-base-semibold text-light-2">Content</Label>
@@ -27,14 +35,15 @@ const CreateTreedForm = () => {
             required
           />
         </div>
-        <span className="text-xs text-light-1">
+        <span className={`${content.length > 280 ? "text-red-500" : "text-gray-1"} text-small-medium`}>
           {content.length} / 280 characters
         </span>
       </div>
 
-      <Button type="submit" className="py-3 focus:outline-1">
-        Post Treed
+      <Button type="submit" disabled={pending} className="py-3 focus:outline-1">
+        {pending ? "Posting ..." : " Post Treed"}
       </Button>
+      <div className="text-red-500">{state}</div>
     </form>
   );
 };

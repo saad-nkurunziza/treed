@@ -1,7 +1,6 @@
 "use client";
 
 import { signOut } from "next-auth/react";
-import Image from "next/image";
 
 export default function LogoutButton() {
   return (
@@ -13,9 +12,7 @@ export default function LogoutButton() {
         })
       }
     >
-      <Image src="/assets/logout.svg" alt="logout" width={24} height={24} />
-
-      <p className="text-light-2 hidden md:block max-lg:hidden">Logout</p>
+      <p className="text-red-500 hidden md:block max-lg:hidden">Logout</p>
     </div>
   );
 }

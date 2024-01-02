@@ -24,11 +24,11 @@ export const sidebarLinks = [
   //   route: "/communities",
   //   label: "Communities",
   // },
-  {
-    imgURL: "/assets/user.svg",
-    route: "/profile",
-    label: "Profile",
-  },
+  // {
+  //   imgURL: "/assets/user.svg",
+  //   route: "/profile",
+  //   label: "Profile",
+  // },
 ];
 
 export const profileTabs = [

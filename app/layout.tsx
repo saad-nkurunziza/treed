@@ -13,7 +13,7 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className="custom-scrollbar">
         {children}
         <Toaster />
       </body>

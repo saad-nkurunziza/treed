@@ -1,7 +1,7 @@
+"use client";
+import { likeTreed } from "@/lib/actions";
+import { useOptimistic } from "react";
 import Image from "next/image";
-import prisma from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
-import { getLoggedInUser, saveActivity } from "@/lib/actions";
 
 const LikeTreed = ({
   count,
@@ -12,41 +12,14 @@ const LikeTreed = ({
   treedId: string;
   isLike: boolean;
 }) => {
-  const likeTreed = async (formData: FormData) => {
-    "use server";
-    const session = await getLoggedInUser();
-    const userId = session?.user?.email;
-    const treedId = formData.get("treedId") as string;
-    if (!userId || !treedId) {
-      throw new Error("Invalid credentials");
-    }
-    const isTweetLiked = await prisma.like.findUnique({
-      where: {
-        treedId_userId: {
-          treedId,
-          userId,
-        },
-      },
-    });
-    if (isTweetLiked) {
-      await prisma.like.delete({
-        where: {
-          treedId_userId: {
-            treedId,
-            userId,
-          },
-        },
-      });
-    }
-    const like = await prisma.like.create({
-      data: {
-        treedId,
-        userId,
-      },
-    });
-    await saveActivity("like", like.treedId);
-    revalidatePath("/");
-  };
+  const [optimisticLikes, addOptimisticLike] = useOptimistic(
+    { count, sending: false },
+    (state, newCount) => ({
+      ...state,
+      count: newCount as number,
+      sending: true,
+    })
+  );
   return (
     <form
       action={likeTreed}
@@ -56,14 +29,20 @@ const LikeTreed = ({
       <input type="hidden" name="treedId" value={treedId} />
       <button type="submit">
         <Image
-          src={isLike ? "/assets/heart-filled.svg" : "/assets/heart-gray.svg"}
+          src={
+            optimisticLikes.sending || isLike
+              ? "/assets/heart-filled.svg"
+              : "/assets/heart-gray.svg"
+          }
           alt="heart"
           width={24}
           height={24}
           className="cursor-pointer object-contain"
         />
       </button>
-      <h3 className="text-small-semibold font-light text-light-3">{count}</h3>
+      <h3 className="text-small-semibold font-light text-light-3">
+        {optimisticLikes.count}
+      </h3>
     </form>
   );
 };

@@ -52,7 +52,7 @@ const Page = async () => {
                       <AvatarFallback>{firstLetter}</AvatarFallback>
                     </Avatar>
                     <p className="!text-small-regular text-light-1">
-                      <span className="mr-1 text-primary-500">
+                      <span className="mr-1 text-primary">
                         {activity.user?.username}
                       </span>
                       <Link href={`/treed/${activity.treed?.id}`}>

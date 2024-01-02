@@ -33,7 +33,7 @@ const fetchTreeds = async () => {
   return treeds;
 };
 
-export default async function Home() {
+export default async function page() {
   const treeds = await fetchTreeds();
   const session = await getLoggedInUser();
   const currentUser = await prisma.user.findUnique({

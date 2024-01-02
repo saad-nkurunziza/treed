@@ -36,20 +36,23 @@ export const saveActivity = async (details: string, treedId: any) => {
   });
 };
 
-export const createTreed = async (formData: FormData) => {
-  const session = await getLoggedInUser();
-  const user = session?.user;
-  const content = formData.get("content") as string;
-
-  const newTreed = await prisma.treed.create({
-    data: {
-      content,
-      userId: user?.email,
-    },
-  });
-  await saveActivity("new_treed", newTreed.id);
-  revalidatePath("/profile");
-  return redirect("/profile");
+export const createTreed = async (prevState: any, formData: FormData) => {
+  try {
+    const session = await getLoggedInUser();
+    const user = session?.user;
+    const content = formData.get("content") as string;
+    const newTreed = await prisma.treed.create({
+      data: {
+        content,
+        userId: user?.email,
+      },
+    });
+    await saveActivity("new_treed", newTreed.id);
+    revalidatePath("/profile");
+    return redirect("/profile");
+  } catch (error) {
+    return "Failed to post";
+  }
 };
 
 export const updateUser = async (formData: FormData) => {
@@ -78,4 +81,61 @@ export const updateUser = async (formData: FormData) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const addComment = async (formData: FormData) => {
+  "use server";
+  const session = await getLoggedInUser();
+  const user = session?.user;
+  const comment = formData.get("comment") as string;
+  const treedId = formData.get("treedId") as string;
+  const userId = user?.email;
+  if (!userId || !treedId) {
+    throw new Error("Invalid credentials");
+  }
+  const createdComment = await prisma.comment.create({
+    data: {
+      comment,
+      treedId,
+      userId,
+    },
+  });
+  // await saveActivity("comment", createdComment.id);
+  revalidatePath(`/treed/${treedId}`);
+};
+
+export const likeTreed = async (formData: FormData) => {
+  "use server";
+  const session = await getLoggedInUser();
+  const userId = session?.user?.email;
+  const treedId = formData.get("treedId") as string;
+  if (!userId || !treedId) {
+    throw new Error("Invalid credentials");
+  }
+  const isTweetLiked = await prisma.like.findUnique({
+    where: {
+      treedId_userId: {
+        treedId,
+        userId,
+      },
+    },
+  });
+  if (isTweetLiked) {
+    await prisma.like.delete({
+      where: {
+        treedId_userId: {
+          treedId,
+          userId,
+        },
+      },
+    });
+  }
+  const like = await prisma.like.create({
+    data: {
+      treedId,
+      userId,
+    },
+  });
+  await saveActivity("like", like.treedId);
+  revalidatePath("/");
 };
