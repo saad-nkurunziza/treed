@@ -49,7 +49,8 @@ export default function SignInWithEmailForm() {
       </div>
 
       <Button type="submit" className="mt-4 w-full">
-        <Mail className="w-4 h-4 mr-2" />Login with Email
+        {/* <Mail className="w-4 h-4 mr-2" /> */}
+        Login with Email
       </Button>
     </form>
   );

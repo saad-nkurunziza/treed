@@ -49,7 +49,7 @@ export const createTreed = async (prevState: any, formData: FormData) => {
     });
     await saveActivity("new_treed", newTreed.id);
     revalidatePath("/profile");
-    return redirect("/profile");
+    redirect("/profile");
   } catch (error) {
     return "Failed to post";
   }
@@ -77,7 +77,8 @@ export const updateUser = async (formData: FormData) => {
       },
     });
     revalidatePath("/profile");
-    return redirect("/profile");
+    revalidatePath("/profile/edit");
+    redirect("/profile");
   } catch (error) {
     console.log(error);
   }

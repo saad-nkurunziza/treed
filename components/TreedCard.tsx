@@ -52,9 +52,9 @@ const TreedCard: FC<Props> = async ({
   const isLiked = await checkIsLiked(id);
   const firstLetter = name.charAt(0).toUpperCase();
   return (
-    <article className="flex w-full flex-col rounded-xl bg-dark-2 p-7">
+    <article className="flex flex-col w-full rounded-xl bg-dark-2 p-7">
       <div className="flex items-start justify-between">
-        <div className="flex w-full flex-1 flex-row gap-4">
+        <div className="flex flex-row flex-1 w-full gap-4">
           <div className="flex flex-col items-center">
             <Link href={`/profile/${email}`}>
               <Avatar className="relative h-11 w-11">
@@ -66,7 +66,7 @@ const TreedCard: FC<Props> = async ({
             <div className="relative mt-2 w-0.5 grow rounded-full bg-neutral-800" />
           </div>
 
-          <div className="flex w-full flex-col">
+          <div className="flex flex-col w-full">
             <div className="flex items-center gap-x-4">
               <Link href={`/profile/${email}`} className="w-fit">
                 <h4 className="cursor-pointer text-base-semibold text-light-1">
@@ -79,15 +79,15 @@ const TreedCard: FC<Props> = async ({
             </div>
             <p className="mt-2 text-small-regular text-light-2">{content}</p>
 
-            <div className=" mt-5 flex flex-col gap-3">
+            <div className="flex flex-col gap-3 mt-5 ">
               <div className="flex gap-4">
-                <LikeTreed count={likes} treedId={id} isLike={isLiked} />
+                <LikeTreed count={likes} treedId={id} isLiked={isLiked} />
                 <Image
                   src="/assets/repost.svg"
                   alt="heart"
                   width={24}
                   height={24}
-                  className="cursor-pointer object-contain"
+                  className="object-contain cursor-pointer"
                 />
               </div>
             </div>
@@ -98,19 +98,19 @@ const TreedCard: FC<Props> = async ({
       </div>
 
       {comments.length > 0 ? (
-        <div className="ml-1 mt-3 flex items-center gap-2">
+        <div className="flex items-center gap-2 mt-3 ml-1">
           {comments.slice(0, 3).map((comment: any, index: number) => {
-            return(
-            <Avatar
-              className={`${index !== 0 && "-ml-5"} relative h-6 w-6`}
-              key={comment.id}
-            >
-              <AvatarImage src={comment.user?.image} />
-              <AvatarFallback>
-                {comment.user?.name.charAt(0).toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
-          )
+            return (
+              <Avatar
+                className={`${index !== 0 && "-ml-5"} relative h-6 w-6`}
+                key={comment.id}
+              >
+                <AvatarImage src={comment.user?.image} />
+                <AvatarFallback>
+                  {comment.user?.name.charAt(0).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+            );
           })}
 
           <Link href={`/treed/${id}`}>
@@ -120,7 +120,7 @@ const TreedCard: FC<Props> = async ({
           </Link>
         </div>
       ) : (
-        <div className="ml-3 mt-3 flex items-center gap-2">
+        <div className="flex items-center gap-2 mt-3 ml-3">
           <Link href={`/treed/${id}`}>
             <p className="mt-1 text-subtle-medium text-gray-1">Reply</p>
           </Link>

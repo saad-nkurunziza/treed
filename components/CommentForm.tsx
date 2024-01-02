@@ -13,7 +13,7 @@ const CommentForm = ({
   treedId: string;
 }) => {
   const formRef = useRef<HTMLFormElement>(null);
-  const { pending } = useFormStatus();
+
   return (
     <form
       ref={formRef}
@@ -45,16 +45,22 @@ const CommentForm = ({
           />
         </div>
       </div>
-
-      <Button
-        type="submit"
-        disabled={pending}
-        className="rounded-3xl bg-primary hover:bg-primary/80 px-6 py-2 !text-small-regular text-light-1 max-xs:w-full"
-      >
-        {pending ? "Adding ..." : "Reply"}
-      </Button>
+      <SubmitButton />
     </form>
   );
 };
 
 export default CommentForm;
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  return (
+    <Button
+      type="submit"
+      disabled={pending}
+      className="rounded-3xl bg-primary hover:bg-primary/80 px-6 py-2 !text-small-regular text-light-1 max-xs:w-full"
+    >
+      {pending ? "Adding ..." : "Reply"}
+    </Button>
+  );
+}

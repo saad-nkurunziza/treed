@@ -9,8 +9,8 @@ const LeftBar = () => {
   const currentPath = usePathname();
 
   return (
-    <section className="scrollbar-hidden sticky left-0 top-0 z-20 flex h-screen w-fit flex-col justify-between overflow-auto border-r border-r-dark-4 bg-dark-2 pb-5 pt-24 max-md:hidden">
-      <div className="flex w-full flex-1 flex-col gap-5 px-7 transition-all duration-300">
+    <section className="sticky top-0 left-0 z-20 flex flex-col justify-between h-screen pt-24 pb-5 overflow-auto border-r scrollbar-hidden w-fit border-r-dark-4 bg-dark-2 max-md:hidden">
+      <div className="flex flex-col flex-1 w-full gap-5 transition-all duration-300 px-7">
         {sidebarLinks.map((link) => {
           const isActive =
             (currentPath.includes(link.route) && link.route.length > 1) ||
@@ -37,7 +37,7 @@ const LeftBar = () => {
         })}
       </div>
 
-      <div className="mt-8 px-6">
+      <div className="px-6 mt-8">
         <Menu />
       </div>
     </section>

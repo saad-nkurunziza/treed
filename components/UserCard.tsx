@@ -14,8 +14,8 @@ const UserCard: FC<Props> = ({ id, name, username, image, email }) => {
   return (
     <article className="flex flex-col justify-between gap-4 max-xs:rounded-xl max-xs:bg-dark-3 max-xs:p-4 xs:flex-row xs:items-center">
       <Link href={`/profile/${email}`}>
-        <div className="flex flex-1 items-start justify-start gap-3 xs:items-center">
-          <Avatar className="relative h-12 w-12 object-cover">
+        <div className="flex items-start justify-start flex-1 gap-3 xs:items-center">
+          <Avatar className="relative object-cover w-12 h-12">
             <AvatarImage src={image} />
             <AvatarFallback>{firstLetter}</AvatarFallback>
           </Avatar>

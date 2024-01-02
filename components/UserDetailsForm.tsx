@@ -40,13 +40,6 @@ const UserDetailsForm = ({ user }: { user: FormValues }) => {
   return (
     <form action={updateUser} autoComplete="off">
       <div className="flex flex-col justify-start gap-8">
-        {/* <Input
-          id="profileImage"
-          name="profileImage"
-          defaultValue={user.image as string}
-          className="rounded-md  px-3 py-2.5 text-sm text-light-1 border border-dark-4 bg-dark-3 w-fit"
-          type="file"
-        /> */}
         {inputs.map((input) => (
           <div key={input.id} className="flex flex-col gap-y-2">
             <Label className="text-white">{input.label}</Label>

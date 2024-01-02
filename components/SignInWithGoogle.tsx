@@ -1,8 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-// import { Google } from "lucide-react";
 import { signIn } from "next-auth/react";
+import Image from "next/image";
 
 export default function SigninWithGoogle() {
   return (
@@ -13,10 +13,16 @@ export default function SigninWithGoogle() {
         })
       }
       className=""
-      variant="secondary"
+      variant="ghost"
     >
-       {/*<Google className="w-4 h-4 mr-2" />*/}
-       Login with Google
+      <Image
+        src={"/google.svg"}
+        alt="Google"
+        width={16}
+        height={16}
+        className="mr-2"
+      />
+      Continue with Google
     </Button>
   );
 }

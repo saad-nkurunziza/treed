@@ -13,7 +13,7 @@ const CreateTreedForm = () => {
   };
   const [state, formAction] = useFormState(createTreed, null);
   const formRef = useRef<HTMLFormElement>(null);
-  const { pending } = useFormStatus();
+
   return (
     <form
       className="flex flex-col justify-start gap-10 mt-10"
@@ -35,17 +35,27 @@ const CreateTreedForm = () => {
             required
           />
         </div>
-        <span className={`${content.length > 280 ? "text-red-500" : "text-gray-1"} text-small-medium`}>
+        <span
+          className={`${
+            content.length > 280 ? "text-red-500" : "text-gray-1"
+          } text-small-medium`}
+        >
           {content.length} / 280 characters
         </span>
       </div>
-
-      <Button type="submit" disabled={pending} className="py-3 focus:outline-1">
-        {pending ? "Posting ..." : " Post Treed"}
-      </Button>
+      <SubmitButton />
       <div className="text-red-500">{state}</div>
     </form>
   );
 };
 
 export default CreateTreedForm;
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  return (
+    <Button type="submit" disabled={pending} className="py-3 focus:outline-1">
+      {pending ? "Posting ..." : " Post Treed"}
+    </Button>
+  );
+}
