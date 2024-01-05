@@ -17,7 +17,7 @@ const RightBar = async () => {
               username={user.username as string}
               email={user.email as string}
               id={user.id}
-              name={user.name!}
+              name={user.name as string}
             />
           ))}
         </div>

@@ -51,7 +51,7 @@ export const createTreed = async (prevState: any, formData: FormData) => {
     revalidatePath("/profile");
     redirect("/profile");
   } catch (error) {
-    return "Failed to post";
+    console.log(error);
   }
 };
 
@@ -105,23 +105,38 @@ export const addComment = async (formData: FormData) => {
   revalidatePath(`/treed/${treedId}`);
 };
 
-export const likeTreed = async (formData: FormData) => {
+export const likeTreed = async (treedId: string) => {
   "use server";
-  const session = await getLoggedInUser();
-  const userId = session?.user?.email;
-  const treedId = formData.get("treedId") as string;
-  if (!userId || !treedId) {
-    throw new Error("Invalid credentials");
-  }
-  const isTweetLiked = await prisma.like.findUnique({
-    where: {
-      treedId_userId: {
+  try {
+    const session = await getLoggedInUser();
+    const userId = session?.user?.email;
+    if (!userId || !treedId) {
+      throw new Error("Invalid credentials");
+    }
+
+    const like = await prisma.like.create({
+      data: {
         treedId,
         userId,
       },
-    },
-  });
-  if (isTweetLiked) {
+    });
+    await saveActivity("like", like.treedId);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    revalidatePath("/");
+  }
+};
+export const unlikeTreed = async (treedId: string) => {
+  "use server";
+  try {
+    const session = await getLoggedInUser();
+    const userId = session?.user?.email;
+
+    if (!userId || !treedId) {
+      throw new Error("Invalid credentials");
+    }
+
     await prisma.like.delete({
       where: {
         treedId_userId: {
@@ -130,13 +145,11 @@ export const likeTreed = async (formData: FormData) => {
         },
       },
     });
+
+    // await saveActivity("like", like.treedId);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    revalidatePath("/");
   }
-  const like = await prisma.like.create({
-    data: {
-      treedId,
-      userId,
-    },
-  });
-  await saveActivity("like", like.treedId);
-  revalidatePath("/");
 };

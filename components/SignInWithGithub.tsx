@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Github } from "lucide-react";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 
@@ -13,11 +12,10 @@ export default function SigninWithGithub() {
           callbackUrl: `${window.location.origin}`,
         })
       }
-      className=""
-      variant="ghost"
+      variant="outline"
     >
       <Image
-        src={"/github.svg"}
+        src={"/giithub.svg"}
         alt="Github"
         width={16}
         height={16}

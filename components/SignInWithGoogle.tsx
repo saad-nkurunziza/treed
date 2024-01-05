@@ -12,8 +12,6 @@ export default function SigninWithGoogle() {
           callbackUrl: `${window.location.origin}`,
         })
       }
-      className=""
-      variant="ghost"
     >
       <Image
         src={"/google.svg"}

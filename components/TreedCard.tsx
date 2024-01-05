@@ -16,10 +16,10 @@ interface Props {
   image: string;
   likes: number;
   createdAt: Date;
-  comments?: any;
+  comments?: any[];
 }
 
-const checkIsLiked = async (treedId: string) => {
+const checkIsLiked = async (treedId: string): Promise<boolean> => {
   const session = await getLoggedInUser();
   const userId = session?.user?.email;
   if (!userId || !treedId) {
@@ -45,7 +45,7 @@ const TreedCard: FC<Props> = async ({
   email,
   likes,
   image,
-  comments,
+  comments = [],
   createdAt,
 }) => {
   const formattedDate = formatDate(createdAt);
@@ -97,33 +97,38 @@ const TreedCard: FC<Props> = async ({
         {/* <DeleteTreed /> */}
       </div>
 
-      {comments.length > 0 ? (
+      {comments.length > 0 && (
         <div className="flex items-center gap-2 mt-3 ml-1">
-          {comments.slice(0, 3).map((comment: any, index: number) => {
-            return (
-              <Avatar
-                className={`${index !== 0 && "-ml-5"} relative h-6 w-6`}
-                key={comment.id}
-              >
-                <AvatarImage src={comment.user?.image} />
-                <AvatarFallback>
-                  {comment.user?.name.charAt(0).toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
-            );
-          })}
+          <div className="flex items-center gap-2 mt-3 ml-1">
+            {comments.slice(0, 3).map((comment: any, index: number) => {
+              return (
+                <Avatar
+                  className={`${index !== 0 && "-ml-5"} relative h-6 w-6`}
+                  key={comment.id}
+                >
+                  <AvatarImage src={comment.user?.image} />
+                  <AvatarFallback>
+                    {comment.user?.name.charAt(0).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+              );
+            })}
 
-          <Link href={`/treed/${id}`}>
-            <p className="mt-1 text-subtle-medium text-gray-1">
-              {comments.length} comment{comments.length > 1 ? "s" : ""}
-            </p>
-          </Link>
+            <Link href={`/treed/${id}`}>
+              <p className="mt-1 text-subtle-medium text-gray-1">
+                {comments.length} comment{comments.length > 1 ? "s" : ""}
+              </p>
+            </Link>
+          </div>
         </div>
-      ) : (
-        <div className="flex items-center gap-2 mt-3 ml-3">
-          <Link href={`/treed/${id}`}>
-            <p className="mt-1 text-subtle-medium text-gray-1">Reply</p>
-          </Link>
+      )}
+      {comments.length === 0 && (
+        <div className="">
+          <div className="flex items-center gap-2 mt-3 ml-3">
+            <Link href={`/treed/${id}`}>
+              <p className="mt-1 text-subtle-medium text-gray-1">Reply</p>
+            </Link>
+          </div>
         </div>
       )}
     </article>
