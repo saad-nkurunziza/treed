@@ -49,7 +49,6 @@ export const createTreed = async (prevState: any, formData: FormData) => {
     });
     await saveActivity("new_treed", newTreed.id);
     revalidatePath("/profile");
-    redirect("/profile");
   } catch (error) {
     console.log(error);
   }
@@ -83,6 +82,7 @@ export const updateUser = async (formData: FormData) => {
     console.log(error);
   }
 };
+
 
 export const addComment = async (formData: FormData) => {
   "use server";

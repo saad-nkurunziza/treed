@@ -4,6 +4,11 @@ import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
+import { useSession } from "next-auth/react";
+import { toast } from "sonner";
+import { redirect } from "next/navigation";
+import { useFormStatus } from "react-dom";
+import { revalidatePath } from "next/cache";
 
 interface FormValues {
   name: string | null;
@@ -28,6 +33,25 @@ const UserDetailsForm = ({ user }: { user: FormValues }) => {
     },
   ];
 
+  // const { data: session, update } = useSession();
+
+  async function handleSubmit(formData: FormData) {
+    const { name, username, bio } = Object.fromEntries(formData.entries());
+    // const email = session?.user?.email;
+
+    if (!name || !username) return;
+
+    // Server action
+    await updateUser(formData);
+
+    // await update({ name });
+    toast("User update", {
+      description: "Profile updated",
+    });
+    
+    redirect("/profile");
+  }
+
   // const [preview, setPreview] = useState(`/images/${user.image}`);
   // const [file, setFile] = useState<File | null>(null);
   // const handleImage = (e: ChangeEvent<HTMLInputElement>) => {
@@ -38,7 +62,7 @@ const UserDetailsForm = ({ user }: { user: FormValues }) => {
   // };
 
   return (
-    <form action={updateUser} autoComplete="off">
+    <form action={handleSubmit} autoComplete="off">
       <div className="flex flex-col justify-start gap-8">
         {inputs.map((input) => (
           <div key={input.id} className="flex flex-col gap-y-2">
@@ -62,12 +86,18 @@ const UserDetailsForm = ({ user }: { user: FormValues }) => {
           />
         </div>
 
-        <Button type="submit" className="py-5">
-          Continue
-        </Button>
+        <SubmitButton />
       </div>
     </form>
   );
 };
 
 export default UserDetailsForm;
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  return (
+    <Button type="submit" disabled={pending} className="py-5 focus:outline-1">
+      {pending ? "Editing ..." : " Edit"}
+    </Button>
+  );
+}

@@ -13,34 +13,34 @@ const LikeTreed = ({
   isLiked: boolean;
 }) => {
   const [state, setState] = useState({ count, isLiked });
-  const [optimisticState, addOptimistic] = useOptimistic(
-    state,
-    (currentState, optimisticValue) => {
-      if (optimisticValue === "add") {
-        return {
-          ...currentState,
-          count: currentState.count + 1,
-          isLiked: true,
-        };
-      } else if (optimisticValue === "remove") {
-        return {
-          ...currentState,
-          count: currentState.count - 1,
-          isLiked: false,
-        };
-      } else {
-        return currentState;
-      }
-    }
-  );
+  // const [optimisticState, addOptimistic] = useOptimistic(
+  //   state,
+  //   (currentState, optimisticValue) => {
+  //     if (optimisticValue === "add") {
+  //       return {
+  //         ...currentState,
+  //         count: currentState.count + 1,
+  //         isLiked: true,
+  //       };
+  //     } else if (optimisticValue === "remove") {
+  //       return {
+  //         ...currentState,
+  //         count: currentState.count - 1,
+  //         isLiked: false,
+  //       };
+  //     } else {
+  //       return currentState;
+  //     }
+  //   }
+  // );
 
   const handleLikeTreed = async () => {
-    addOptimistic("add");
+    // addOptimistic("add");
     await likeTreed(treedId);
   };
 
   const handleUnlikeTreed = async () => {
-    addOptimistic("remove");
+    // addOptimistic("remove");
     await unlikeTreed(treedId);
   };
 
@@ -48,11 +48,11 @@ const LikeTreed = ({
     <div className="flex gap-x-1 items-center">
       <button
         type="button"
-        onClick={optimisticState.isLiked ? handleUnlikeTreed : handleLikeTreed}
+        onClick={isLiked ? handleUnlikeTreed : handleLikeTreed}
       >
         <Image
           src={
-            optimisticState.isLiked
+            isLiked
               ? "/assets/heart-filled.svg"
               : "/assets/heart-gray.svg"
           }
@@ -63,7 +63,7 @@ const LikeTreed = ({
         />
       </button>
       <h3 className="text-small-semibold font-light text-light-3">
-        {optimisticState.count}
+        {count}
       </h3>
     </div>
   );

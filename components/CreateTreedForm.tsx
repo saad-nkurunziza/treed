@@ -5,6 +5,7 @@ import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import { Label } from "./ui/label";
 import { useFormState, useFormStatus } from "react-dom";
+import { redirect } from "next/navigation";
 
 const CreateTreedForm = () => {
   const [content, setContent] = useState("");
@@ -14,13 +15,16 @@ const CreateTreedForm = () => {
   const [state, formAction] = useFormState(createTreed, null);
   const formRef = useRef<HTMLFormElement>(null);
 
+  const handleSubmit = async (formData: FormData) => {
+    await formAction(formData);
+    formRef.current?.reset();
+    redirect("/profile");
+  };
+
   return (
     <form
       className="flex flex-col justify-start gap-10 mt-10"
-      action={async (formData) => {
-        formAction(formData);
-        formRef.current?.reset();
-      }}
+      action={handleSubmit}
       autoComplete="off"
     >
       <div className="flex flex-col w-full gap-3">
