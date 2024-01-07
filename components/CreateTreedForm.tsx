@@ -44,7 +44,7 @@ const CreateTreedForm = () => {
         </span>
       </div>
       <SubmitButton />
-      <div className="text-red-500">{state}</div>
+      <div className="text-red-500">{state!}</div>
     </form>
   );
 };
